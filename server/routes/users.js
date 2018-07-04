@@ -5,5 +5,6 @@ const userController = require('../controllers/userController');
 router.get('/',userController.showAllUsers);
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
+router.post('/login/viafb',userController.loginViaFb);
 
 module.exports = router;

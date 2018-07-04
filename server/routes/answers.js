@@ -5,6 +5,7 @@ const isAuthorized = require('../middlewares/authorization')
 const answerController = require('../controllers/answerController')
 
 router.get('/',answerController.retrieveAnswers)
+router.get('/users/:id',answerController.findAnswerByUserId)
 router.get('/:id',answerController.fetchAnswer)
 router.post('/add',isAuthenticated, answerController.addAnswer)
 router.put('/upvote/:id', isAuthenticated, answerController.upVoteAnswer)

@@ -21,6 +21,22 @@ module.exports = {
         })
       })
   },
+  findQuestionByUserId: (req,res) => {
+    let _id = req.params.id
+    Question.find({ownerId: _id})
+    .populate('ownerId')
+    .then(questions=>{
+      res.status(200).json({
+        message: 'retrieve questions by user success',
+        questions
+      })
+    })
+    .catch(err=>{
+      res.status(400).json({
+        error: err.message
+      })
+    })
+  },
   fetchQuestion: (req, res) => {
     let _id = req.params.id
     Question.findById({ _id })
@@ -86,7 +102,8 @@ module.exports = {
     let voterId = req.user.id
 
     Question.findByIdAndUpdate({ _id }, {
-      $addToSet: { votersId: voterId }
+      $addToSet: { votersUpId: voterId },
+      $pull: {votersDownId: voterId}
     })
       .then(response => {
         res.status(200).json({
@@ -106,7 +123,8 @@ module.exports = {
     let voterId = req.user.id
 
     Question.findOneAndUpdate({ _id }, {
-      $pull: { votersId:voterId }
+      $addToSet: { votersDownId: voterId },
+      $pull: {votersUpId: voterId}
     })
       .then(response => {
         res.status(200).json({
